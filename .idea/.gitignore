@@ -1,3 +1,10 @@
-# Default ignored files
+# Ignorar la carpeta .idea
+/.idea/
+
+# Ignorar archivos de configuración específicos del proyecto
 /shelf/
 /workspace.xml
+
+# Ignorar archivos y carpetas específicas del entorno
+*.iml
+/out/
