@@ -1,6 +1,7 @@
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
+import bancoApp.utils.Constantes;
 
 import java.util.ArrayList;
 
@@ -62,12 +63,11 @@ public abstract class CuentaBancaria implements Imprimible {
 
     @Override
     public String devolverInfoString() {
-        return "CuentaBancaria {" +
-                "iban='" + iban + '\'' +
-                ", saldoActual=" + saldoActual +
-                ", titular=" + titular +
-                ", cuentasAhorro=" + cuentasAhorro +
-                ", cuentasCorriente=" + cuentasCorriente +
-                '}';
+        return "Cuenta: " + Constantes.SALTO_LINEA +
+                "IBAN = " + iban  + Constantes.SALTO_LINEA +
+                "Saldo actual = " + saldoActual + Constantes.SALTO_LINEA +
+                "Titular = " + titular.devolverInfoString() + Constantes.SALTO_LINEA +
+                (cuentasAhorro != null ? "Cuenta de ahorro = " + cuentasAhorro  + Constantes.SALTO_LINEA : "") +
+                (cuentasCorriente != null ? "Cuenta corriente = " + cuentasCorriente + Constantes.SALTO_LINEA : "");
     }
 }

@@ -1,6 +1,7 @@
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
+import bancoApp.utils.Constantes;
 
 public class CuentaCorrientePersonal extends CuentaCorriente {
     private double comisionMantenimiento;
@@ -16,5 +17,11 @@ public class CuentaCorrientePersonal extends CuentaCorriente {
 
     public void setComisionMantenimiento(double comisionMantenimiento) {
         this.comisionMantenimiento = comisionMantenimiento;
+    }
+
+    @Override
+    public String devolverInfoString() {
+        return super.devolverInfoString() + "Cuenta Corriente Personal: " + Constantes.SALTO_LINEA +
+                "Comisión de mantenimiento = " + comisionMantenimiento + Constantes.SALTO_LINEA;
     }
 }

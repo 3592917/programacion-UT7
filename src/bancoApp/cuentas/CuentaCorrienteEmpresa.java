@@ -1,6 +1,7 @@
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
+import bancoApp.utils.Constantes;
 
 public class CuentaCorrienteEmpresa extends CuentaCorriente {
     private double tipoInteresDescubierto;
@@ -42,6 +43,10 @@ public class CuentaCorrienteEmpresa extends CuentaCorriente {
 
     @Override
     public String devolverInfoString() {
-        return super.devolverInfoString();
+        return super.devolverInfoString() + "Cuenta Corriente Empresa: " + Constantes.SALTO_LINEA +
+                "Tipo de interés por descubierto = " + tipoInteresDescubierto + Constantes.SALTO_LINEA +
+                "Comisión fija por descubierto = " + comisionFijaDescubierto + Constantes.SALTO_LINEA +
+                "Máximo descubierto permitido = " + maximoDescubiertoPermitido + Constantes.SALTO_LINEA;
+
     }
 }

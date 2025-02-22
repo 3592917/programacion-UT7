@@ -4,6 +4,7 @@ import bancoApp.cuentas.*;
 import bancoApp.utils.Constantes;
 import bancoApp.utils.Validador;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Principal {
@@ -71,54 +72,64 @@ public class Principal {
             while (!tipoCuentaValido) {
                 System.out.println("¿Qué tipo de cuenta desea abrir? \n1. Cuenta corriente\n2. Cuenta ahorro");
                 tipoCuenta = sc.nextInt();
+                sc.nextLine();
                 if (tipoCuenta == 1) {
                     tipoCuentaValido = true;
 
                     System.out.println("Ha escogido cuenta corriente. ¿Cuántas entidades autorizadas desea añadir? Máximo 5: ");
                     int numEntidades = sc.nextInt();
                     System.out.println("Introduzca una a una las entidades: ");
-                    String[] entidadesAutorizadas = new String[]{};
+                    String[] entidadesAutorizadas = new String[numEntidades];
                     int i = 0;
-                    while(i <= numEntidades){
+                    while (i <= numEntidades) {
                         String entradaEntidad = sc.nextLine();
-                        entidadesAutorizadas = new String[]{entradaEntidad};
+                        entidadesAutorizadas[i] = entradaEntidad;
                         i++;
                     }
 
                     System.out.println("Seleccione el tipo de cuenta corriente:\n1. Cuenta corriente personal\n2. Cuenta corriente de empresa");
                     int tipoCuentaCorriente = sc.nextInt();
-
-                    if(tipoCuentaCorriente == 1) {
+                    sc.nextLine();
+                    if (tipoCuentaCorriente == 1) {
                         System.out.println("Ha escogido cuenta corriente personal.\nIntroduzca la comisión de mantenimiento: ");
                         double comisionMant = sc.nextDouble();
+                        sc.nextLine();
 
                         CuentaCorrientePersonal nuevaCuentaCorrienteP = new CuentaCorrientePersonal(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas, comisionMant);
-                        banco.abrirCuenta(nuevaCuentaCorrienteP);
-                        System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_P);
+                        if (banco.abrirCuenta(nuevaCuentaCorrienteP)) {
+                            System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_P);
+                        } else {
+                            System.out.println(Constantes.ERROR_ABRIR_CUENTA);
+                        }
 
-                    } else if(tipoCuentaCorriente == 2) {
+                    } else if (tipoCuentaCorriente == 2) {
                         System.out.println("Ha escogido cuenta corriente de empresa. \nIntroduzca el tipo de interés por descubierto: ");
                         double tipoInteresDescubierto = sc.nextDouble();
                         System.out.println("Introduzca la comisión fija por cada descubierto: ");
                         double comisionFijaDescubierto = sc.nextDouble();
                         System.out.println("Introduzca el máximo descubierto permitido: ");
                         double maximoDescubiertoPermitido = sc.nextDouble();
+                        sc.nextLine();
                         CuentaCorrienteEmpresa nuevaCuentaCorrienteEmpresa = new CuentaCorrienteEmpresa(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas, tipoInteresDescubierto, comisionFijaDescubierto, maximoDescubiertoPermitido);
-                        banco.abrirCuenta(nuevaCuentaCorrienteEmpresa);
-                        System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_E);
-
+                        if (banco.abrirCuenta(nuevaCuentaCorrienteEmpresa)) {
+                            System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_E);
+                        } else {
+                            System.out.println(Constantes.ERROR_ABRIR_CUENTA);
+                        }
                     }
 
                 } else if (tipoCuenta == 2) {
                     tipoCuentaValido = true;
                     System.out.println("Para abrir una cuenta de ahorro introduzca el tipo de interés de remuneración:");
                     double tipoInteres = sc.nextDouble();
+                    sc.nextLine();
                     CuentaAhorro nuevaCuentaAhorro = new CuentaAhorro(entradaCuenta, entradaSaldo, nuevaPersona, tipoInteres);
-                    banco.abrirCuenta(nuevaCuentaAhorro);
-                    System.out.println(Constantes.EXITO_CUENTA_AHORRO);
+                    if (banco.abrirCuenta(nuevaCuentaAhorro)) {
+                        System.out.println(Constantes.EXITO_CUENTA_AHORRO);
+                    } else {
+                        System.out.println(Constantes.ERROR_ABRIR_CUENTA);
+                    }
                 }
-
-                System.out.println("Introduzca un tipo de cuenta válido");
             }
 
         } catch (Exception e) {
@@ -138,10 +149,12 @@ public class Principal {
             switch (entrada) {
                 case 1:
                     System.out.println(Constantes.OPCION_1 + Constantes.SALTO_LINEA);
+                    sc.nextLine();
                     crearCuenta();
                     break;
                 case 2:
                     System.out.println(Constantes.OPCION_2 + Constantes.SALTO_LINEA);
+                    System.out.println(Arrays.toString(banco.listadoCuentas()));
                     break;
                 case 3:
                     System.out.println(Constantes.OPCION_3 + Constantes.SALTO_LINEA);
@@ -155,6 +168,8 @@ public class Principal {
                 case 6:
                     System.out.println(Constantes.OPCION_6 + Constantes.SALTO_LINEA);
                     break;
+                default:
+                    System.out.println(Constantes.OPCION_VALIDA + Constantes.SALTO_LINEA);
             }
 
         } while (entrada != 7);

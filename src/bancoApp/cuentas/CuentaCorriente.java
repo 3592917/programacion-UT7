@@ -1,6 +1,7 @@
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
+import bancoApp.utils.Constantes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,10 +51,9 @@ public class CuentaCorriente extends CuentaBancaria {
 
     @Override
     public String devolverInfoString() {
-        return super.devolverInfoString() + ", CuentaCorriente{" +
-                "entidadesAutorizadas=" + Arrays.toString(entidadesAutorizadas) +
-                ", cuentasCorrienteEmpresa=" + cuentasCorrienteEmpresa +
-                ", cuentasCorrientePersonal=" + cuentasCorrientePersonal +
-                '}' ;
+        return super.devolverInfoString() + "Cuenta corriente: " + Constantes.SALTO_LINEA +
+                (entidadesAutorizadas.length > 0 ? "Entidades autorizadas = " + Arrays.toString(entidadesAutorizadas) + Constantes.SALTO_LINEA : "") +
+                (cuentasCorrienteEmpresa != null ? "Cuentas corrientes de empresa = " + cuentasCorrienteEmpresa + Constantes.SALTO_LINEA : "") +
+                (cuentasCorrientePersonal != null ? "Cuentas corrientes personales = " + cuentasCorrientePersonal + Constantes.SALTO_LINEA : "");
     }
 }

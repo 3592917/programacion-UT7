@@ -1,6 +1,7 @@
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
+import bancoApp.utils.Constantes;
 
 
 public class CuentaAhorro extends CuentaBancaria {
@@ -21,9 +22,8 @@ public class CuentaAhorro extends CuentaBancaria {
 
     @Override
     public String devolverInfoString() {
-        return super.devolverInfoString() + ", CuentaAhorro{" +
-                "tipoInteresAnual=" + tipoInteresAnual +
-                '}';
+        return super.devolverInfoString() + "Cuenta de ahorro: " + Constantes.SALTO_LINEA +
+                "Tipo de interés anual: " + tipoInteresAnual;
     }
 
 }

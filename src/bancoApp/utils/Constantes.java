@@ -12,5 +12,7 @@ public class Constantes {
     public static final String EXITO_CUENTA_CORRIENTE_P = "Nueva cuenta corriente personal creada con éxito";
     public static final String EXITO_CUENTA_CORRIENTE_E = "Nueva cuenta corriente de empresa creada con éxito";
     public static final String EXITO_CUENTA_AHORRO = "Nueva cuenta de ahorro creada con éxito";
+    public static final String ERROR_ABRIR_CUENTA = "Ha habido un error al intentar crear la cuenta";
+    public static final String OPCION_VALIDA = "Introduzca una opción válida";
 
 }
