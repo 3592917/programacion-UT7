@@ -1,3 +1,8 @@
+/**
+ * Clase Cuenta corriente personal que hereda de la clase Cuenta corriente
+ *
+ * @author Raquel Sánchez Guirado
+ */
 package bancoApp.cuentas;
 
 import bancoApp.Persona;

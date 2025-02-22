@@ -1,3 +1,8 @@
+/**
+ * Clase abstracta que representa la entidad común para las cuentas bancarias
+ *
+ * @author Raquel Sánchez Guirado
+ */
 package bancoApp.cuentas;
 
 import bancoApp.Persona;
@@ -66,8 +71,6 @@ public abstract class CuentaBancaria implements Imprimible {
         return "Cuenta: " + Constantes.SALTO_LINEA +
                 "IBAN = " + iban  + Constantes.SALTO_LINEA +
                 "Saldo actual = " + saldoActual + Constantes.SALTO_LINEA +
-                "Titular = " + titular.devolverInfoString() + Constantes.SALTO_LINEA +
-                (cuentasAhorro != null ? "Cuenta de ahorro = " + cuentasAhorro  + Constantes.SALTO_LINEA : "") +
-                (cuentasCorriente != null ? "Cuenta corriente = " + cuentasCorriente + Constantes.SALTO_LINEA : "");
+                "Titular = " + titular.devolverInfoString() + Constantes.SALTO_LINEA;
     }
 }

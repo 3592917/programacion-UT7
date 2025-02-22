@@ -1,3 +1,8 @@
+/**
+ * Clase Persona que gestiona la entidad de un titular de cuenta
+ *
+ * @author Raquel Sánchez Guirado
+ */
 package bancoApp;
 
 import bancoApp.cuentas.Imprimible;

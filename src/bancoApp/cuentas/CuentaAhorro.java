@@ -1,3 +1,8 @@
+/**
+ * Clase que representa la entidad Cuenta de ahorro
+ *
+ *  @author Raquel Sánchez Guirado
+ */
 package bancoApp.cuentas;
 
 import bancoApp.Persona;

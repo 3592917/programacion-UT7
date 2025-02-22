@@ -1,3 +1,8 @@
+/**
+ * Clase Banco que contiene múltiples cuentas bancarias
+ *
+ * @author Raquel Sánchez Guirado
+ */
 package bancoApp;
 
 import bancoApp.cuentas.CuentaBancaria;
@@ -35,28 +40,57 @@ public class Banco {
     }
 
     /**
+     * Método auxiliar para unificar las búsquedas
+     *
+     * @param iban Número de cuenta para identificar la cuenta
+     * @return
+     */
+    public CuentaBancaria buscarCuenta(String iban) {
+        int i = 0;
+        CuentaBancaria cuentaEncontrada = null;
+
+        while (i < cuentasBancarias.size()) {
+            CuentaBancaria c = cuentasBancarias.get(i);
+
+            if (c.getIban().equals(iban)) {
+                cuentaEncontrada = c;
+            }
+            i++;
+        }
+        return cuentaEncontrada;
+    }
+
+    /**
      * Método para abrir una nueva cuenta bancaria
      *
      * @param cuentaBancaria
      * @return devuelve verdadero o falso si la creación se completa o no
      */
     public boolean abrirCuenta(CuentaBancaria cuentaBancaria) {
-        if (cantidadCuentas > 100) {
-            return false;
+
+        if (cantidadCuentas >= 100) {
+            throw new ArrayIndexOutOfBoundsException("Se ha alcanzado el límite de 100 cuentas");
         }
+        if (buscarCuenta(cuentaBancaria.getIban()) != null) {
+            throw new IllegalArgumentException("La cuenta que intenta abrir ya existe");
+        }
+
         cuentasBancarias.add(cuentaBancaria);
         cantidadCuentas++;
 
-        if(cuentaBancaria.getClass() == CuentaCorrientePersonal.class){
+        if (cuentaBancaria.getClass() == CuentaCorrientePersonal.class) {
             cuentasCorrientePersonal.add((CuentaCorrientePersonal) cuentaBancaria);
-        } else if(cuentaBancaria.getClass() == CuentaCorrienteEmpresa.class){
+        } else if (cuentaBancaria.getClass() == CuentaCorrienteEmpresa.class) {
             cuentasCorrienteEmpresa.add((CuentaCorrienteEmpresa) cuentaBancaria);
         }
+
         return true;
     }
 
     /**
      * Método que proporciona un listado de cuentas
+     *
+     * @return Array de cuentas tipo String
      */
     public String[] listadoCuentas() {
         String[] arrayCuentas = new String[cuentasBancarias.size()];
@@ -75,7 +109,8 @@ public class Banco {
      * @return información de cuenta tipo String
      */
     public String informacionCuenta(String iban) {
-        return null;
+        CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
+        return cuentaEncontrada != null ? cuentaEncontrada.devolverInfoString() : null;
     }
 
     /**
@@ -86,7 +121,11 @@ public class Banco {
      * @return devuelve verdadero o falso si la transacción se completa o no
      */
     public boolean ingresoCuenta(String iban, double cantidad) {
-        return false;
+        CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
+        if (cuentaEncontrada != null) {
+            cuentaEncontrada.setSaldoActual(cantidad + cuentaEncontrada.getSaldoActual());
+        }
+        return cuentaEncontrada != null;
     }
 
     /**
@@ -97,7 +136,11 @@ public class Banco {
      * @return devuelve verdadero o falso si la transacción se completa o no
      */
     public boolean retiradaCuenta(String iban, double cantidad) {
-        return false;
+        CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
+        if (cuentaEncontrada != null) {
+            cuentaEncontrada.setSaldoActual(cantidad - cuentaEncontrada.getSaldoActual());
+        }
+        return cuentaEncontrada != null;
     }
 
     /**
@@ -107,7 +150,12 @@ public class Banco {
      * @return devuelve la cantidad de tipo double
      */
     public double obtenerSaldo(String iban) {
-        return 0;
+        CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
+        double saldo = 0;
+        if (cuentaEncontrada != null) {
+            saldo = cuentaEncontrada.getSaldoActual();
+        }
+        return saldo;
     }
 
 }
