@@ -28,7 +28,7 @@ public class CuentaAhorro extends CuentaBancaria {
     @Override
     public String devolverInfoString() {
         return super.devolverInfoString() + "Cuenta de ahorro: " + Constantes.SALTO_LINEA +
-                "Tipo de interés anual: " + tipoInteresAnual;
+                "Tipo de interés anual: " + tipoInteresAnual + Constantes.SALTO_LINEA;
     }
 
 }

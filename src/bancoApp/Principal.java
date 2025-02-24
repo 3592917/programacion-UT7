@@ -13,6 +13,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Principal {
+    /**
+     * Método para mostrar el menú de opciones disponibles
+     * en la ejecución del programa
+     */
     private static void mostrarMenu() {
         System.out.println("Seleccione una opción: " + Constantes.SALTO_LINEA +
                 Constantes.OPCION_1 + Constantes.SALTO_LINEA +
@@ -28,11 +32,24 @@ public class Principal {
     static Banco banco = new Banco();
     static Validador validador = new Validador();
 
+    /**
+     * Método utilizado en el método principal de crear una cuenta
+     * para añadir los datos relativos al titular de cada cuenta
+     *
+     * @return Devuelve la instancia de la clase persona creada
+     */
     private static Persona crearTitular() {
-        System.out.println("Introduzca datos personales. \nNombre: ");
-        String entradaNombre = sc.nextLine();
-        System.out.println("Apellidos: ");
-        String entradaApellidos = sc.nextLine();
+        String entradaNombre = "";
+        while (entradaNombre.isEmpty()) {
+            System.out.println("Introduzca datos personales. \nNombre: ");
+            entradaNombre = sc.nextLine();
+        }
+
+        String entradaApellidos = "";
+        while (entradaApellidos.isEmpty()) {
+            System.out.println("Apellidos: ");
+            entradaApellidos = sc.nextLine();
+        }
 
         String entradaDNI = "";
         boolean dniValido = false;
@@ -50,6 +67,15 @@ public class Principal {
         return new Persona(entradaNombre, entradaApellidos, entradaDNI);
     }
 
+    /**
+     * Método utilizado en el método principal de crear una cuenta
+     * para abrir una cuenta de corriente personal o de empresa
+     *
+     * @param entradaCuenta        Número de cuenta introducido por el usuario
+     * @param entradaSaldo         Saldo inicial introducido por el usuario
+     * @param nuevaPersona         Datos relativos al titular introducidos por el usuario
+     * @param entidadesAutorizadas Entidades introducidas por el usuario
+     */
     private static void abrirCuentaCorriente(String entradaCuenta, double entradaSaldo, Persona nuevaPersona, String[] entidadesAutorizadas) {
         boolean cuentaValida = false;
 
@@ -89,6 +115,14 @@ public class Principal {
         }
     }
 
+    /**
+     * Método utilizado en el método principal de crear una cuenta
+     * para abrir una cuenta de ahorro
+     *
+     * @param entradaCuenta Número de cuenta introducido por el usuario
+     * @param entradaSaldo  Saldo inicial introducido por el usuario
+     * @param nuevaPersona  Datos relativos al titular introducidos por el usuario
+     */
     private static void abrirCuentaAhorro(String entradaCuenta, double entradaSaldo, Persona nuevaPersona) {
         System.out.println("Para abrir una cuenta de ahorro introduzca el tipo de interés de remuneración:");
         double tipoInteres = sc.nextDouble();
@@ -101,6 +135,9 @@ public class Principal {
         }
     }
 
+    /**
+     * Método principal para crear una cuenta bancaria
+     */
     private static void crearCuenta() {
         Validador validador = new Validador();
 
@@ -142,7 +179,9 @@ public class Principal {
 
                     System.out.println("Ha escogido cuenta corriente. ¿Cuántas entidades autorizadas desea añadir? Máximo 5: ");
                     int numEntidades = sc.nextInt();
-                    System.out.println("Introduzca una a una las entidades: ");
+                    if (numEntidades != 0) {
+                        System.out.println("Introduzca una a una las entidades: ");
+                    }
                     sc.nextLine();
                     String[] entidadesAutorizadas = new String[numEntidades];
                     int i = 0;
@@ -165,6 +204,11 @@ public class Principal {
         }
     }
 
+    /**
+     * Método principal que ejecuta la lógica del programa
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -182,10 +226,12 @@ public class Principal {
                     sc.nextLine();
                     crearCuenta();
                     break;
+
                 case 2:
                     System.out.println(Constantes.OPCION_2 + Constantes.SALTO_LINEA);
-                    System.out.println(Arrays.toString(banco.listadoCuentas()));
+                    System.out.println(Arrays.toString(banco.listadoCuentas()) + Constantes.SALTO_LINEA);
                     break;
+
                 case 3:
                     System.out.println(Constantes.OPCION_3 + Constantes.SALTO_LINEA);
                     sc.nextLine();
@@ -198,6 +244,7 @@ public class Principal {
                         System.out.println(Constantes.CUENTA_NO_ENCONTRADA);
                     }
                     break;
+
                 case 4:
                     System.out.println(Constantes.OPCION_4 + Constantes.SALTO_LINEA);
                     sc.nextLine();
@@ -211,6 +258,7 @@ public class Principal {
                         System.out.println(Constantes.CUENTA_NO_ACTUALIZADA);
                     }
                     break;
+
                 case 5:
                     System.out.println(Constantes.OPCION_5 + Constantes.SALTO_LINEA);
                     sc.nextLine();
@@ -218,25 +266,33 @@ public class Principal {
                     entradaIBAN = sc.nextLine();
                     System.out.println(Constantes.INTRODUZCA_CANTIDAD);
                     entradaCantidad = sc.nextDouble();
-                    if (banco.retiradaCuenta(entradaIBAN, entradaCantidad)) {
-                        System.out.println(Constantes.CUENTA_ACTUALIZADA);
-                    } else {
-                        System.out.println(Constantes.CUENTA_NO_ACTUALIZADA);
+                    try {
+                        if (banco.retiradaCuenta(entradaIBAN, entradaCantidad)) {
+                            System.out.println(Constantes.CUENTA_ACTUALIZADA);
+                        } else {
+                            System.out.println(Constantes.CUENTA_NO_ACTUALIZADA);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(Constantes.CUENTA_NO_ACTUALIZADA + e.getMessage());
                     }
                     break;
+
                 case 6:
                     System.out.println(Constantes.OPCION_6 + Constantes.SALTO_LINEA);
                     sc.nextLine();
                     System.out.println(Constantes.INTRODUZCA_IBAN);
                     entradaIBAN = sc.nextLine();
-                    double saldoObtenido = banco.obtenerSaldo(entradaIBAN);
-                    if (saldoObtenido != 0) {
+                    CuentaBancaria cuenta = banco.buscarCuenta(entradaIBAN);
+
+                    if (cuenta != null) {
+                        double saldoObtenido = banco.obtenerSaldo(entradaIBAN);
                         System.out.println("El saldo actual de la cuenta es: "
                                 + saldoObtenido);
                     } else {
                         System.out.println(Constantes.CUENTA_NO_ENCONTRADA);
                     }
                     break;
+
                 default:
                     System.out.println(Constantes.OPCION_VALIDA + Constantes.SALTO_LINEA);
             }

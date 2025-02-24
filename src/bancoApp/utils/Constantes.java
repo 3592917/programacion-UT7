@@ -1,5 +1,6 @@
 /**
- * Clase que contiene constantes contenedoras de cadenas de caracteres utilizadas en la aplicación.
+ * Clase que contiene constantes contenedoras de cadenas
+ * de caracteres utilizadas en la aplicación.
  *
  * @author Raquel Sánchez Guirado
  */

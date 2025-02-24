@@ -5,6 +5,7 @@
  */
 package bancoApp;
 
+import bancoApp.cuentas.CuentaAhorro;
 import bancoApp.cuentas.CuentaBancaria;
 import bancoApp.cuentas.CuentaCorrienteEmpresa;
 import bancoApp.cuentas.CuentaCorrientePersonal;
@@ -15,7 +16,7 @@ public class Banco {
     private ArrayList<CuentaBancaria> cuentasBancarias;
     private ArrayList<CuentaCorrientePersonal> cuentasCorrientePersonal;
     private ArrayList<CuentaCorrienteEmpresa> cuentasCorrienteEmpresa;
-
+    private ArrayList<CuentaAhorro> cuentasAhorro;
     private Integer cantidadCuentas;
 
     public ArrayList<CuentaBancaria> getCuentasBancarias() {
@@ -37,13 +38,14 @@ public class Banco {
         this.cuentasBancarias = new ArrayList<>();
         this.cuentasCorrienteEmpresa = new ArrayList<>();
         this.cuentasCorrientePersonal = new ArrayList<>();
+        this.cuentasAhorro = new ArrayList<>();
     }
 
     /**
      * Método auxiliar para unificar las búsquedas
      *
      * @param iban Número de cuenta para identificar la cuenta
-     * @return
+     * @return Devuelve la instancia de la cuenta bancaria existente o nulo si no existe
      */
     public CuentaBancaria buscarCuenta(String iban) {
         int i = 0;
@@ -63,11 +65,13 @@ public class Banco {
     /**
      * Método para abrir una nueva cuenta bancaria
      *
-     * @param cuentaBancaria
-     * @return devuelve verdadero o falso si la creación se completa o no
+     * @param cuentaBancaria Instancia de cuenta bancaria que podrá ser de
+     *                       ahorro o corriente de empresa o personal
+     * @return devuelve verdadero o falso según el estado de la transacción
      */
     public boolean abrirCuenta(CuentaBancaria cuentaBancaria) {
 
+        this.cantidadCuentas = cuentasAhorro.size() + cuentasCorrienteEmpresa.size() + cuentasCorrientePersonal.size();
         if (cantidadCuentas >= 100) {
             throw new ArrayIndexOutOfBoundsException("Se ha alcanzado el límite de 100 cuentas");
         }
@@ -76,12 +80,13 @@ public class Banco {
         }
 
         cuentasBancarias.add(cuentaBancaria);
-        cantidadCuentas++;
 
         if (cuentaBancaria.getClass() == CuentaCorrientePersonal.class) {
             cuentasCorrientePersonal.add((CuentaCorrientePersonal) cuentaBancaria);
         } else if (cuentaBancaria.getClass() == CuentaCorrienteEmpresa.class) {
             cuentasCorrienteEmpresa.add((CuentaCorrienteEmpresa) cuentaBancaria);
+        } else {
+            cuentasAhorro.add((CuentaAhorro) cuentaBancaria);
         }
 
         return true;
@@ -116,9 +121,10 @@ public class Banco {
     /**
      * Método para ingresar una cantidad en una determinada cuenta
      *
-     * @param iban
-     * @param cantidad
-     * @return devuelve verdadero o falso si la transacción se completa o no
+     * @param iban Número de cuenta con la que se realiza la búsqueda
+     * @param cantidad Cantidad a ingresar en la cuenta
+     *
+     * @return devuelve verdadero o falso según el resultado de la transacción
      */
     public boolean ingresoCuenta(String iban, double cantidad) {
         CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
@@ -131,14 +137,18 @@ public class Banco {
     /**
      * Método para retirar una cantidad de una determinada cuenta
      *
-     * @param iban
-     * @param cantidad
-     * @return devuelve verdadero o falso si la transacción se completa o no
+     * @param iban Número de cuenta con la que se realiza la búsqueda
+     * @param cantidad Cantidad a retirar de la cuenta
+     * @return devuelve verdadero o falso según el resultado de la transacción
      */
     public boolean retiradaCuenta(String iban, double cantidad) {
         CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
         if (cuentaEncontrada != null) {
-            cuentaEncontrada.setSaldoActual(cantidad - cuentaEncontrada.getSaldoActual());
+            if(cantidad > cuentaEncontrada.getSaldoActual()){
+                throw new IllegalArgumentException("La cantidad máxima a retirar es: " + cuentaEncontrada.getSaldoActual());
+            } else {
+                cuentaEncontrada.setSaldoActual(cuentaEncontrada.getSaldoActual() - cantidad);
+            }
         }
         return cuentaEncontrada != null;
     }
@@ -146,8 +156,8 @@ public class Banco {
     /**
      * Método para obtener el saldo de una determinada cuenta
      *
-     * @param iban
-     * @return devuelve la cantidad de tipo double
+     * @param iban Número de cuenta con la que se realiza la búsqueda
+     * @return devuelve la cantidad actual de la cuenta de tipo double
      */
     public double obtenerSaldo(String iban) {
         CuentaBancaria cuentaEncontrada = buscarCuenta(iban);
