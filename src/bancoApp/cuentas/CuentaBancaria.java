@@ -8,14 +8,10 @@ package bancoApp.cuentas;
 import bancoApp.Persona;
 import bancoApp.utils.Constantes;
 
-import java.util.ArrayList;
-
 public abstract class CuentaBancaria implements Imprimible {
     private String iban;
     private double saldoActual;
     private Persona titular;
-    private ArrayList<CuentaAhorro> cuentasAhorro;
-    private ArrayList<CuentaCorriente> cuentasCorriente;
 
     public CuentaBancaria() {
     }
@@ -48,22 +44,6 @@ public abstract class CuentaBancaria implements Imprimible {
 
     public void setTitular(Persona titular) {
         this.titular = titular;
-    }
-
-    public ArrayList<CuentaAhorro> getCuentasAhorro() {
-        return cuentasAhorro;
-    }
-
-    public void setCuentasAhorro(ArrayList<CuentaAhorro> cuentasAhorro) {
-        this.cuentasAhorro = cuentasAhorro;
-    }
-
-    public ArrayList<CuentaCorriente> getCuentasCorriente() {
-        return cuentasCorriente;
-    }
-
-    public void setCuentasCorriente(ArrayList<CuentaCorriente> cuentasCorriente) {
-        this.cuentasCorriente = cuentasCorriente;
     }
 
     @Override

@@ -5,18 +5,12 @@
  */
 package bancoApp;
 
-import bancoApp.cuentas.CuentaAhorro;
 import bancoApp.cuentas.CuentaBancaria;
-import bancoApp.cuentas.CuentaCorrienteEmpresa;
-import bancoApp.cuentas.CuentaCorrientePersonal;
 
 import java.util.ArrayList;
 
 public class Banco {
     private ArrayList<CuentaBancaria> cuentasBancarias;
-    private ArrayList<CuentaCorrientePersonal> cuentasCorrientePersonal;
-    private ArrayList<CuentaCorrienteEmpresa> cuentasCorrienteEmpresa;
-    private ArrayList<CuentaAhorro> cuentasAhorro;
     private Integer cantidadCuentas;
 
     public ArrayList<CuentaBancaria> getCuentasBancarias() {
@@ -36,9 +30,6 @@ public class Banco {
     public Banco() {
         this.cantidadCuentas = 0;
         this.cuentasBancarias = new ArrayList<>();
-        this.cuentasCorrienteEmpresa = new ArrayList<>();
-        this.cuentasCorrientePersonal = new ArrayList<>();
-        this.cuentasAhorro = new ArrayList<>();
     }
 
     /**
@@ -71,7 +62,7 @@ public class Banco {
      */
     public boolean abrirCuenta(CuentaBancaria cuentaBancaria) {
 
-        this.cantidadCuentas = cuentasAhorro.size() + cuentasCorrienteEmpresa.size() + cuentasCorrientePersonal.size();
+        this.cantidadCuentas = cuentasBancarias.size();
         if (cantidadCuentas >= 100) {
             throw new ArrayIndexOutOfBoundsException("Se ha alcanzado el límite de 100 cuentas");
         }
@@ -80,14 +71,6 @@ public class Banco {
         }
 
         cuentasBancarias.add(cuentaBancaria);
-
-        if (cuentaBancaria.getClass() == CuentaCorrientePersonal.class) {
-            cuentasCorrientePersonal.add((CuentaCorrientePersonal) cuentaBancaria);
-        } else if (cuentaBancaria.getClass() == CuentaCorrienteEmpresa.class) {
-            cuentasCorrienteEmpresa.add((CuentaCorrienteEmpresa) cuentaBancaria);
-        } else {
-            cuentasAhorro.add((CuentaAhorro) cuentaBancaria);
-        }
 
         return true;
     }
