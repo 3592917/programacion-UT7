@@ -25,8 +25,14 @@ public class CuentaCorrientePersonal extends CuentaCorriente {
     }
 
     @Override
-    public String devolverInfoString() {
-        return super.devolverInfoString() + "Cuenta Corriente Personal: " + Constantes.SALTO_LINEA +
-                "Comisión de mantenimiento = " + comisionMantenimiento + Constantes.SALTO_LINEA;
+    public boolean retiradaCuenta(double cantidad) {
+        boolean transaccion = false;
+        if (cantidad <= getSaldoActual()) {
+            setSaldoActual(getSaldoActual() - cantidad);
+            transaccion = true;
+        } else {
+            System.out.println(Constantes.CUENTA_NO_ACTUALIZADA);
+        }
+        return transaccion;
     }
 }

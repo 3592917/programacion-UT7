@@ -46,6 +46,8 @@ public abstract class CuentaBancaria implements Imprimible {
         this.titular = titular;
     }
 
+    public abstract boolean retiradaCuenta(double cantidad);
+
     @Override
     public String devolverInfoString() {
         return "Cuenta: " + Constantes.SALTO_LINEA +

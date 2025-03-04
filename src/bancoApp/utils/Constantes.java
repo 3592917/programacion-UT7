@@ -28,6 +28,7 @@ public class Constantes {
     public static final String CUENTA_NO_ACTUALIZADA = "La transacción no ha sido realizada.";
     public static final String TIPO_CUENTA_BANCARIA = "¿Qué tipo de cuenta desea abrir? \n1. Cuenta corriente\n2. Cuenta ahorro";
     public static final String TIPO_CUENTA_CORRIENTE = "Seleccione el tipo de cuenta corriente:\n1. Cuenta corriente personal\n2. Cuenta corriente de empresa";
+    public static final String SUPERA_DESCUBIERTO = "La transacción no se ha realizado por superar el máximo descubierto";
     public static final String LISTADO_VACIO = "El listado de cuentas está vacío. ";
 
 }

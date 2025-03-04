@@ -7,7 +7,7 @@ package bancoApp.utils;
 
 public class Validador {
     public void validarIBAN(String iban) throws InvalidIBAN {
-        if(!iban.matches("^ES\\d{22}$")) {
+        if(!iban.matches("^ES\\d{2}$")) {
             throw new InvalidIBAN("Formato válido: ES seguido de 22 dígitos. ");
         }
     }

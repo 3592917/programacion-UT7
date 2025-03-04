@@ -7,6 +7,7 @@ package bancoApp.cuentas;
 
 import bancoApp.Persona;
 import bancoApp.utils.Constantes;
+import com.sun.source.tree.BreakTree;
 
 public class CuentaCorrienteEmpresa extends CuentaCorriente {
     private double tipoInteresDescubierto;
@@ -47,11 +48,15 @@ public class CuentaCorrienteEmpresa extends CuentaCorriente {
     }
 
     @Override
-    public String devolverInfoString() {
-        return super.devolverInfoString() + "Cuenta Corriente Empresa: " + Constantes.SALTO_LINEA +
-                "Tipo de interés por descubierto = " + tipoInteresDescubierto + Constantes.SALTO_LINEA +
-                "Comisión fija por descubierto = " + comisionFijaDescubierto + Constantes.SALTO_LINEA +
-                "Máximo descubierto permitido = " + maximoDescubiertoPermitido + Constantes.SALTO_LINEA;
-
+    public boolean retiradaCuenta(double cantidad) {
+        boolean transaccion = false;
+        double nuevoSaldo = getSaldoActual() - cantidad;
+        if(nuevoSaldo >= -maximoDescubiertoPermitido) {
+            setSaldoActual(nuevoSaldo);
+            transaccion = true;
+        } else {
+            System.out.println(Constantes.SUPERA_DESCUBIERTO);
+        }
+        return transaccion;
     }
 }

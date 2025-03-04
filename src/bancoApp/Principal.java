@@ -11,6 +11,7 @@ import bancoApp.utils.EscanerEntrada;
 import bancoApp.utils.Validador;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Principal {
@@ -85,11 +86,12 @@ public class Principal {
                 double comisionMant = EscanerEntrada.leerDouble("Ha escogido cuenta corriente personal.\nIntroduzca la comisión de mantenimiento: ");
 
                 CuentaCorrientePersonal nuevaCuentaCorrienteP = new CuentaCorrientePersonal(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas, comisionMant);
-                if (banco.abrirCuenta(nuevaCuentaCorrienteP)) {
-                    System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_P);
-                } else {
-                    System.out.println(Constantes.ERROR_ABRIR_CUENTA);
-                }
+
+                    if(banco.abrirCuenta(nuevaCuentaCorrienteP)) {
+                        System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_P);
+                    } else {
+                        System.out.println(Constantes.ERROR_ABRIR_CUENTA);
+                    }
 
             } else if (tipoCuentaCorriente == 2) {
                 cuentaValida = true;
@@ -97,8 +99,8 @@ public class Principal {
                 double comisionFijaDescubierto = EscanerEntrada.leerDouble("Introduzca la comisión fija por cada descubierto: ");
                 double maximoDescubiertoPermitido = EscanerEntrada.leerDouble("Introduzca el máximo descubierto permitido: ");
 
-                CuentaCorrienteEmpresa nuevaCuentaCorrienteEmpresa = new CuentaCorrienteEmpresa(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas, tipoInteresDescubierto, comisionFijaDescubierto, maximoDescubiertoPermitido);
-                if (banco.abrirCuenta(nuevaCuentaCorrienteEmpresa)) {
+                CuentaCorrienteEmpresa nuevaCuentaCorrienteE = new CuentaCorrienteEmpresa(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas, tipoInteresDescubierto, comisionFijaDescubierto, maximoDescubiertoPermitido);
+                if(banco.abrirCuenta(nuevaCuentaCorrienteE)) {
                     System.out.println(Constantes.EXITO_CUENTA_CORRIENTE_E);
                 } else {
                     System.out.println(Constantes.ERROR_ABRIR_CUENTA);
@@ -119,7 +121,7 @@ public class Principal {
         double tipoInteres = EscanerEntrada.leerDouble("Para abrir una cuenta de ahorro introduzca el tipo de interés de remuneración:");
 
         CuentaAhorro nuevaCuentaAhorro = new CuentaAhorro(entradaCuenta, entradaSaldo, nuevaPersona, tipoInteres);
-        if (banco.abrirCuenta(nuevaCuentaAhorro)) {
+        if(banco.abrirCuenta(nuevaCuentaAhorro)) {
             System.out.println(Constantes.EXITO_CUENTA_AHORRO);
         } else {
             System.out.println(Constantes.ERROR_ABRIR_CUENTA);
@@ -132,62 +134,59 @@ public class Principal {
     private static void crearCuenta() {
         Validador validador = new Validador();
 
-        try {
-            Persona nuevaPersona = crearTitular();
+        Persona nuevaPersona = crearTitular();
 
-            double entradaSaldo = EscanerEntrada.leerDouble("Saldo inicial: ");
+        double entradaSaldo = EscanerEntrada.leerDouble("Saldo inicial: ");
 
-            String entradaCuenta = "";
-            boolean cuentaValida = false;
+        String entradaCuenta = "";
+        boolean cuentaValida = false;
 
-            while (!cuentaValida) {
-                entradaCuenta = EscanerEntrada.leerString("Introduzca nº cuenta: ");
-                try {
-                    String cuentaExistente = banco.informacionCuenta(entradaCuenta);
-                    if (cuentaExistente == null) {
-                        validador.validarIBAN(entradaCuenta);
-                        cuentaValida = true;
-                    } else {
-                        System.out.println(Constantes.CUENTA_EXISTE);
-                    }
-                } catch (Validador.InvalidIBAN e) {
-                    System.out.println(e.getMessage());
+        while (!cuentaValida) {
+            entradaCuenta = EscanerEntrada.leerString("Introduzca nº cuenta: ");
+            try {
+                String cuentaExistente = banco.informacionCuenta(entradaCuenta);
+                if (cuentaExistente == null) {
+                    validador.validarIBAN(entradaCuenta);
+                    cuentaValida = true;
+                } else {
+                    System.out.println(Constantes.CUENTA_EXISTE);
                 }
+            } catch (Validador.InvalidIBAN e) {
+                System.out.println(e.getMessage());
             }
-
-            boolean tipoCuentaValido = false;
-            int tipoCuenta;
-
-            while (!tipoCuentaValido) {
-                tipoCuenta = EscanerEntrada.leerInt(Constantes.TIPO_CUENTA_BANCARIA);
-
-                if (tipoCuenta == 1) {
-                    tipoCuentaValido = true;
-
-                    int numEntidades = EscanerEntrada.leerInt("Ha escogido cuenta corriente. ¿Cuántas entidades autorizadas desea añadir? Máximo 5: ");
-                    if (numEntidades != 0) {
-                        System.out.println("Introduzca una a una las entidades: ");
-                    }
-
-                    String[] entidadesAutorizadas = new String[numEntidades];
-                    int i = 0;
-                    while (i < numEntidades) {
-                        String entradaEntidad = sc.nextLine();
-                        entidadesAutorizadas[i] = entradaEntidad;
-                        i++;
-                    }
-
-                    abrirCuentaCorriente(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas);
-
-                } else if (tipoCuenta == 2) {
-                    tipoCuentaValido = true;
-                    abrirCuentaAhorro(entradaCuenta, entradaSaldo, nuevaPersona);
-                }
-            }
-
-        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-            System.out.println(Constantes.ERROR_ABRIR_CUENTA + e.getMessage());
         }
+
+        boolean tipoCuentaValido = false;
+        int tipoCuenta;
+
+        while (!tipoCuentaValido) {
+            tipoCuenta = EscanerEntrada.leerInt(Constantes.TIPO_CUENTA_BANCARIA);
+
+            if (tipoCuenta == 1) {
+                tipoCuentaValido = true;
+
+                int numEntidades = EscanerEntrada.leerInt("Ha escogido cuenta corriente. ¿Cuántas entidades autorizadas desea añadir? Máximo 5: ");
+                if (numEntidades != 0) {
+                    System.out.println("Introduzca una a una las entidades: ");
+                }
+
+                String[] entidadesAutorizadas = new String[numEntidades];
+                int i = 0;
+                while (i < numEntidades) {
+                    String entradaEntidad = sc.nextLine();
+                    entidadesAutorizadas[i] = entradaEntidad;
+                    i++;
+                }
+
+                abrirCuentaCorriente(entradaCuenta, entradaSaldo, nuevaPersona, entidadesAutorizadas);
+
+            } else if (tipoCuenta == 2) {
+                tipoCuentaValido = true;
+                abrirCuentaAhorro(entradaCuenta, entradaSaldo, nuevaPersona);
+
+            }
+        }
+
     }
 
     /**
@@ -224,11 +223,7 @@ public class Principal {
                     System.out.println(Constantes.OPCION_3 + Constantes.SALTO_LINEA);
                     entradaIBAN = EscanerEntrada.leerString(Constantes.INTRODUZCA_IBAN);
                     String resultadoBusqueda = banco.informacionCuenta(entradaIBAN);
-                    if ((resultadoBusqueda != null)) {
-                        System.out.println(banco.informacionCuenta(entradaIBAN));
-                    } else {
-                        System.out.println(Constantes.CUENTA_NO_ENCONTRADA);
-                    }
+                    System.out.println(Objects.requireNonNullElse(resultadoBusqueda, Constantes.CUENTA_NO_ENCONTRADA));
                     break;
 
                 case 4:
@@ -249,8 +244,6 @@ public class Principal {
                     try {
                         if (banco.retiradaCuenta(entradaIBAN, entradaCantidad)) {
                             System.out.println(Constantes.CUENTA_ACTUALIZADA);
-                        } else {
-                            System.out.println(Constantes.CUENTA_NO_ACTUALIZADA);
                         }
                     } catch (IllegalArgumentException e) {
                         System.out.println(Constantes.CUENTA_NO_ACTUALIZADA + e.getMessage());
@@ -260,10 +253,9 @@ public class Principal {
                 case 6:
                     System.out.println(Constantes.OPCION_6 + Constantes.SALTO_LINEA);
                     entradaIBAN = EscanerEntrada.leerString(Constantes.INTRODUZCA_IBAN);
-                    CuentaBancaria cuenta = banco.buscarCuenta(entradaIBAN);
+                    double saldoObtenido = banco.obtenerSaldo(entradaIBAN);
 
-                    if (cuenta != null) {
-                        double saldoObtenido = banco.obtenerSaldo(entradaIBAN);
+                    if (saldoObtenido != -1) {
                         System.out.println("El saldo actual de la cuenta es: "
                                 + saldoObtenido);
                     } else {
